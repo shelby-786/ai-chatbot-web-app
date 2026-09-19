@@ -5,7 +5,6 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { BrainIcon, ChevronDownIcon } from "lucide-react";
 import {
   useScrollLock,
-  useAssistantState,
   type ReasoningMessagePartComponent,
   type ReasoningGroupComponent,
 } from "@assistant-ui/react";
@@ -63,9 +62,11 @@ function ReasoningRoot({
       if (!open) {
         lockScroll();
       }
+
       if (!isControlled) {
         setUncontrolledOpen(open);
       }
+
       controlledOnOpenChange?.(open);
     },
     [lockScroll, isControlled, controlledOnOpenChange],
@@ -91,7 +92,10 @@ function ReasoningRoot({
   );
 }
 
-function ReasoningFade({ className, ...props }: React.ComponentProps<"div">) {
+function ReasoningFade({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="reasoning-fade"
@@ -136,11 +140,13 @@ function ReasoningTrigger({
         data-slot="reasoning-trigger-icon"
         className="aui-reasoning-trigger-icon size-4 shrink-0"
       />
+
       <span
         data-slot="reasoning-trigger-label"
         className="aui-reasoning-trigger-label-wrapper relative inline-block leading-none"
       >
         <span>Reasoning{durationText}</span>
+
         {active ? (
           <span
             aria-hidden
@@ -151,6 +157,7 @@ function ReasoningTrigger({
           </span>
         ) : null}
       </span>
+
       <ChevronDownIcon
         data-slot="reasoning-trigger-chevron"
         className={cn(
@@ -191,7 +198,10 @@ function ReasoningContent({
   );
 }
 
-function ReasoningText({ className, ...props }: React.ComponentProps<"div">) {
+function ReasoningText({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="reasoning-text"
@@ -214,26 +224,17 @@ function ReasoningText({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-const ReasoningImpl: ReasoningMessagePartComponent = () => <MarkdownText />;
+const ReasoningImpl: ReasoningMessagePartComponent = () => (
+  <MarkdownText />
+);
 
 const ReasoningGroupImpl: ReasoningGroupComponent = ({
   children,
-  startIndex,
-  endIndex,
 }) => {
-  const isReasoningStreaming = useAssistantState(({ message }) => {
-    if (message.status?.type !== "running") return false;
-    const lastIndex = message.parts.length - 1;
-    if (lastIndex < 0) return false;
-    const lastType = message.parts[lastIndex]?.type;
-    if (lastType !== "reasoning") return false;
-    return lastIndex >= startIndex && lastIndex <= endIndex;
-  });
-
   return (
-    <ReasoningRoot defaultOpen={isReasoningStreaming}>
-      <ReasoningTrigger active={isReasoningStreaming} />
-      <ReasoningContent aria-busy={isReasoningStreaming}>
+    <ReasoningRoot defaultOpen={false}>
+      <ReasoningTrigger />
+      <ReasoningContent>
         <ReasoningText>{children}</ReasoningText>
       </ReasoningContent>
     </ReasoningRoot>

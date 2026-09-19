@@ -1,24 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  AssistantIf,
   ThreadListItemMorePrimitive,
   ThreadListItemPrimitive,
   ThreadListPrimitive,
+  
 } from "@assistant-ui/react";
 import { ArchiveIcon, MoreHorizontalIcon, PlusIcon } from "lucide-react";
 import type { FC } from "react";
 
 export const ThreadList: FC = () => {
+  
+
   return (
     <ThreadListPrimitive.Root className="aui-root aui-thread-list-root flex flex-col gap-1">
       <ThreadListNew />
-      <AssistantIf condition={({ threads }) => threads.isLoading}>
-        <ThreadListSkeleton />
-      </AssistantIf>
-      <AssistantIf condition={({ threads }) => !threads.isLoading}>
-        <ThreadListPrimitive.Items components={{ ThreadListItem }} />
-      </AssistantIf>
+
+      <ThreadListPrimitive.Items components={{ ThreadListItem }} />
     </ThreadListPrimitive.Root>
   );
 };
@@ -78,6 +76,7 @@ const ThreadListItemMore: FC = () => {
           <span className="sr-only">More options</span>
         </Button>
       </ThreadListItemMorePrimitive.Trigger>
+
       <ThreadListItemMorePrimitive.Content
         side="bottom"
         align="start"
